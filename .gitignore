@@ -1,6 +1,7 @@
 # Python 
 __pycache__
 .venv
+.env
 
 # Google OAuth credentials
 client_secret.json
