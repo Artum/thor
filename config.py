@@ -5,7 +5,7 @@ import os
 
 import logging.config
 
-logging.config.fileConfig("log.config")
+logging.config.fileConfig('log.config')
 
 class Config:
     # WSGI
@@ -17,6 +17,9 @@ class Config:
     FLASK_ENV = os.getenv('FLASK_ENV')
     FLASK_DEBUG = os.getenv('FLASK_DEBUG')
     FLASK_APP = 'wsgi.py'
+
+    # JWT
+    JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
     # SQL Alchemy
     SQLALCHEMY_TRACK_MODIFICATIONS = False

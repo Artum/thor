@@ -1,4 +1,4 @@
-"""create users table
+"""first init
 
 Revision ID: 43cdb1162556
 Revises: 
@@ -20,12 +20,13 @@ def upgrade():
     op.create_table(
         "users",
         Column('id', Integer(), primary_key=True, autoincrement=True),
-        Column('full_name', String(255)),
-        Column('last_name', String(255)),
-        Column('first_name', String(255)),
-        Column('email', String(255)),
-        Column('auth_code', String(255)),
-        Column('is_active', Boolean()),
+        Column('user_id', String(256)),
+        Column('full_name', String(256)),
+        Column('last_name', String(256)),
+        Column('first_name', String(256)),
+        Column('email', String(512)),
+        Column('access_token', String(512)),
+        Column('google_access_token', String(512)),
     )
 
 
