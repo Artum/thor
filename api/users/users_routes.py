@@ -38,21 +38,20 @@ def login():
     user = User.query.filter_by(user_id=user_id).first()
     if not user:
         user = User(**login_params)
-        user.access_token = create_access_token(identity=user.user_id, expires_delta=datetime.timedelta(hours=8))
+        user.token = create_access_token(identity=user.user_id, expires_delta=datetime.timedelta(hours=8))
         db.session.add(user)
         db.session.commit()
     else:
         try:
-            user_token = decode_token(user.access_token)
+            user_token = decode_token(user.token)
         except ExpiredSignatureError:
-            user.access_token = create_access_token(identity=user.user_id, expires_delta=datetime.timedelta(hours=8))
+            user.token = create_access_token(identity=user.user_id, expires_delta=datetime.timedelta(hours=8))
             db.session.add(user)
             db.session.commit()
 
     resp = jsonify({
         'user_id': user.user_id,
-        'access_token': user.access_token,
-        'authorized': True
+        'token': user.token
     })
     resp.status_code = 200
     return resp
@@ -107,18 +106,6 @@ def authorize():
     return resp
 
 
-@users_blueprint.route('/authorize', methods=["GET"])
-@jwt_required
-def get_user_authorization_state():
-    log.debug("Get authorization state")
-    user = get_current_user()
-    result = {
-        "is_authorized": user.google_access_token is not None
-    }
-
-    log.debug(f"User authorization state: {result}")
-    return jsonify(result)
-
 
 
 ###################################################################################################
@@ -158,9 +145,9 @@ def validate_token(token: str, user_id: str):
 @jwt.user_loader_callback_loader
 def jwt_load_user(user_id):
     try:
-        access_token = request.headers.environ["HTTP_AUTHORIZATION"].split()[1]
+        token = request.headers.environ["HTTP_AUTHORIZATION"].split()[1]
         user = User.query.filter_by(user_id=user_id).first()
-        if user.access_token != access_token:
+        if user.token != token:
             abort(401, "Token mismatch")
         return user
     except Exception as ex:

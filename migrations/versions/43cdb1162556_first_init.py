@@ -6,7 +6,7 @@ Create Date: 2020-10-08 21:33:28.384023
 
 """
 from alembic import op
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, String
 
 
 # revision identifiers, used by Alembic.
@@ -19,14 +19,12 @@ depends_on = None
 def upgrade():
     op.create_table(
         "users",
-        Column('id', Integer(), primary_key=True, autoincrement=True),
-        Column('user_id', String(256)),
+        Column('user_id', String(256), primary_key=True),
         Column('full_name', String(256)),
         Column('last_name', String(256)),
         Column('first_name', String(256)),
         Column('email', String(512)),
-        Column('access_token', String(512)),
-        Column('google_access_token', String(512)),
+        Column('token', String(512)),
     )
 
 
