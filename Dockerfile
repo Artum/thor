@@ -23,8 +23,6 @@ ENV MYSQL_DB="thor"
 
 ENV GOOGLE_CLIENT_ID=""
 ENV GOOGLE_CLIENT_SECRET=""
-ENV GOOGLE_CLIENT_SECRET_FILE=""
-
 
 RUN pip3 install poetry
 RUN poetry config virtualenvs.create false

@@ -68,15 +68,13 @@ def authorize():
     if not request.headers.get('X-Requested-With'):
         abort(403)
 
-    # Set path to the Web application client_secret_*.json file you downloaded from the
-    # Google API Console: https://console.developers.google.com/apis/credentials
-    CLIENT_SECRET_FILE = Config.GOOGLE_CLIENT_SECRET_FILE
-
     # Exchange auth code for access token, refresh token, and ID token
-    credentials = client.credentials_from_clientsecrets_and_code(
-        CLIENT_SECRET_FILE,
-        ['https://www.googleapis.com/auth/drive.appdata', 'profile', 'email'],
-        auth_code)
+    credentials = client.credentials_from_code(
+        client_id=Config.GOOGLE_CLIENT_ID,
+        client_secret=Config.GOOGLE_CLIENT_SECRET,
+        scope=['https://www.googleapis.com/auth/drive.appdata', 'profile', 'email'],
+        code=auth_code
+    )
         
     # TODO: Parse the credential object and store in DB needed info
     """
