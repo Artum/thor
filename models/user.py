@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, Boolean
 from database import db
 
 class User(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     user_id = Column(String(256), primary_key=True)
     full_name = Column(String(256))
