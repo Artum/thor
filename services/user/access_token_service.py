@@ -1,7 +1,6 @@
 import datetime
-from typing import Optional
 
-from flask_jwt_extended import jwt_required, create_access_token, decode_token, get_current_user
+from flask_jwt_extended import create_access_token, decode_token
 from jwt import ExpiredSignatureError
 
 class AccessTokenService:

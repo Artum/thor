@@ -1,8 +1,9 @@
 import datetime
 
-from services.authentication_service import AuthenticationService
-from services.user_service import UserService
-from services.access_token_service import AccessTokenService
+from .authentication_service import AuthenticationService
+from .user_service import UserService
+from .access_token_service import AccessTokenService
+
 from config import Config
 
 

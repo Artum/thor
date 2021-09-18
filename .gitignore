@@ -8,3 +8,6 @@ client_secret.json
 
 # VSCode
 .vscode
+
+# Ignore develoment Mock storage path
+local_storage

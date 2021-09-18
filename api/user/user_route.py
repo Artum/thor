@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, abort, request
 from logging import getLogger
 from auth import jwt
 
-from services.user_controller import UserController
+from services.user import UserController
 
 __all__ = ["user_blueprint"]
 
