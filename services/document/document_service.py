@@ -47,7 +47,13 @@ class DocumentService:
         import os, pathlib
         import hashlib
  
-        path = pathlib.Path('local_storage', user_id)
+        # Create root folder
+        path = pathlib.Path('local_storage')
+        if not path.exists():
+            os.mkdir(path)
+ 
+        # Create user folder
+        path = path.joinpath(user_id)
         if not path.exists():
             os.mkdir(path)
 
