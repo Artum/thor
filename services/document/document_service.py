@@ -7,14 +7,28 @@ class DocumentService:
 
    
     @staticmethod
-    def get_all_documents(user_id: str) -> Iterable[Document]:
-        documents = Document.query.filter_by(user_id=user_id).order_by(Document.id).offset(0).limit(100).all()
+    def get_all_documents(user_id: str, field: Optional[str], sort: Optional[str]) -> Iterable[Document]:
+        order_by_field = getattr(Document, field) if field else Document.id
+        if sort == "desc":
+            order_by_field = order_by_field.desc()
+        
+        documents = Document.query.filter_by(user_id=user_id).order_by(order_by_field).offset(0).limit(100).all()
         return documents
 
     @staticmethod
     def get_document_by_id(user_id:str, id: str) -> Optional[Document]:
         document = Document.query.filter_by(user_id=user_id, id=id).first()
         return document
+
+    @staticmethod
+    def delete_document(user_id:str, id: str) -> bool:
+        document = DocumentService.get_document_by_id(user_id=user_id, id=id)
+        if document:
+            DocumentService.delete_document_file(user_id=user_id, document_hash=document.document_hash)
+            db.session.delete(document)
+            db.session.commit()
+            return True
+        return False
 
     @staticmethod
     def get_document_content(document_path:str) -> Optional[bytes]:
@@ -47,6 +61,23 @@ class DocumentService:
             f.write(file_content)
 
         return True, document_hash, str(path)
+
+    @staticmethod
+    def delete_document_file(user_id: str, document_hash: str) -> bool:
+        import os, pathlib
+        import hashlib
+ 
+        path = pathlib.Path('local_storage', user_id)
+        if not path.exists():
+            return False
+
+        path = path.joinpath(document_hash)
+        if not path.exists():   
+            return False
+
+        os.remove(path)
+
+        return True
 
 
     @staticmethod

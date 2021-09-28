@@ -21,9 +21,10 @@ document_blueprint = Blueprint(
 @document_blueprint.route('/', methods=["GET"])
 @jwt_required
 def get_all_documents():
-
+    field = request.args.get('field')
+    sort = request.args.get('sort')
     user_id = get_jwt_identity()
-    documents = DocumentController.get_all_documents(user_id=user_id)
+    documents = DocumentController.get_all_documents(user_id=user_id, field=field, sort=sort)
     resp = jsonify([x.to_dict() for x in documents])
     resp.status_code = 200
     return resp
@@ -37,6 +38,15 @@ def get_document(id: str):
         abort(404, "Document not found")
 
     resp = jsonify(document.to_dict())
+    resp.status_code = 200
+    return resp
+
+@document_blueprint.route('/<id>', methods=["DELETE"])
+@jwt_required
+def delete_document(id: str):
+    user_id = get_jwt_identity()
+    deleted = DocumentController.delete_document(user_id=user_id, id=id)
+    resp = jsonify({'id':id, 'deleted':deleted})
     resp.status_code = 200
     return resp
 

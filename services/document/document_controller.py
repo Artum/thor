@@ -6,12 +6,17 @@ from typing import Iterable, Optional
 class DocumentController:
 
     @staticmethod
-    def get_all_documents(user_id: str) -> Iterable[Document]:
-        return DocumentService.get_all_documents(user_id=user_id)
+    def get_all_documents(user_id: str, field: Optional[str], sort: Optional[str]) -> Iterable[Document]:
+        return DocumentService.get_all_documents(user_id=user_id, field=field, sort=sort)
 
     @staticmethod
     def get_document_by_id(user_id:str, id: str) -> Optional[Document]:
         return DocumentService.get_document_by_id(user_id=user_id, id=id)
+
+    @staticmethod
+    def delete_document(user_id:str, id: str):
+        return DocumentService.delete_document(user_id=user_id, id=id)
+
 
     @staticmethod
     def get_document_content_by_id(user_id:str, id: str) -> Optional[bytes]:
